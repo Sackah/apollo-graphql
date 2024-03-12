@@ -9,8 +9,6 @@ import { GET_BOOKS } from "../BookList/BookList.queries";
 import { useState } from "react";
 import { addBookSchema } from "../../utils/yup";
 import { resetForm } from "../../utils/reset";
-import { useDispatch } from "react-redux";
-import { addBook } from "../../store/bookSlice";
 
 function AddBook() {
   const { loading, error, data } = useQuery(GET_AUTHORS);
@@ -19,11 +17,12 @@ function AddBook() {
     genre: "",
     authorId: "",
   });
-  const [mutateFunction, { data: book, loading: adding, error: adderror }] =
-    useMutation(ADD_BOOK, {
+  const [mutateFunction, { loading: adding, error: adderror }] = useMutation(
+    ADD_BOOK,
+    {
       refetchQueries: [{ query: GET_BOOKS }],
-    });
-  const dispatch = useDispatch();
+    }
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -43,7 +42,6 @@ function AddBook() {
       .then((data) => {
         console.log(data);
         mutateFunction({ variables: form }).then(() => {
-          dispatch(addBook(book));
           resetForm(form, setForm);
         });
       })
