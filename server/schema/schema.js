@@ -1,7 +1,7 @@
-const graphql = require("graphql");
-const _ = require("lodash");
-const Book = require("../models/book.model");
-const Author = require("../models/author.model");
+import graphql from "graphql";
+import _ from "lodash";
+import Book from "../models/book.model.js";
+import Author from "../models/author.model.js";
 
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
 
@@ -118,7 +118,7 @@ const Mutation = new GraphQLObjectType({
     },
 });
 
-module.exports = new GraphQLSchema({
+export default new GraphQLSchema({
     query: RootQuery,
     mutation: Mutation,
 });

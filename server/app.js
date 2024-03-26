@@ -1,9 +1,11 @@
-const express = require("express");
-const { graphqlHTTP } = require("express-graphql");
-const schema = require("./schema/schema");
-const mongoose = require("mongoose");
-require("dotenv").config();
-const cors = require("cors");
+import express from "express";
+import { graphqlHTTP } from "express-graphql";
+import schema from "./schema/schema.js";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
+
+dotenv.config();
 
 mongoose
     .connect(process.env.DB_URI)
