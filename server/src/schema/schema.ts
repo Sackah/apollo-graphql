@@ -5,7 +5,7 @@ import Author from "../models/author.model.js";
 
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = graphql;
 
-const BookType = new GraphQLObjectType({
+const BookType: graphql.GraphQLObjectType<any, any> = new GraphQLObjectType({
     name: "Book",
     fields: () => ({
         id: { type: GraphQLID },
@@ -22,7 +22,7 @@ const BookType = new GraphQLObjectType({
     }),
 });
 
-const AuthorType = new GraphQLObjectType({
+const AuthorType: graphql.GraphQLObjectType<any, any> = new GraphQLObjectType({
     name: "Author",
     fields: () => ({
         id: { type: GraphQLID },
@@ -38,7 +38,7 @@ const AuthorType = new GraphQLObjectType({
     }),
 });
 
-const RootQuery = new GraphQLObjectType({
+const RootQuery: graphql.GraphQLObjectType<any, any> = new GraphQLObjectType({
     name: "RootQueryType",
     fields: {
         book: {
