@@ -1,0 +1,19 @@
+<ul id="book-list">
+    @for (book of books | async; track $index) {
+        <li (click)="select(book.id)">{{book.name}}</li>
+    }
+</ul>
+
+@if (selectedBook()) {
+    <apl-book-details [bookId]="selectedBook()!"/>
+}@else {
+    <p>No book selected...</p>
+}
+
+<!-- @if (vehicleSignal().loading) {
+    <h1>Loading...</h1>
+}@else if (vehicleSignal().data) {
+    @for (vehicle of vehicleSignal().data?.results; track $index) {
+        <div>{{vehicle.name}}</div>
+    }
+} -->
