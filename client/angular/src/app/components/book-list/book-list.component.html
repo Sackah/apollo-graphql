@@ -1,14 +1,26 @@
-<ul id="book-list">
-    @for (book of books | async; track $index) {
-        <li (click)="select(book.id)">{{book.name}}</li>
-    }
-</ul>
+@if (books().loading) {
+    <div>Loading...</div>
+} @else if (books().error) {
+    <div>{{books().error}}</div>
+} @else {
+    <ul id="book-list">
+        @for (book of books().data; track $index) {
+            <li (click)="select(book.id)">{{book.name}}</li>
+        }
+    </ul>
+}
 
 @if (selectedBook()) {
-    <apl-book-details [bookId]="selectedBook()!"/>
+    <apl-book-details [bookId]="selectedBook()"/>
 }@else {
     <p>No book selected...</p>
 }
+
+<!-- <ul id="book-list">
+    @for (book of books | async; track $index) {
+        <li (click)="select(book.id)">{{book.name}}</li>
+    }
+</ul> -->
 
 <!-- @if (vehicleSignal().loading) {
     <h1>Loading...</h1>

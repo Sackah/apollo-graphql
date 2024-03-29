@@ -3,6 +3,8 @@ import { Apollo, gql } from 'apollo-angular';
 import { ApiSignal, Book, SignalFactory, VehicleResponse } from '../../shared';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root',
@@ -18,45 +20,32 @@ export class BookListService {
   `;
   private apollo = inject(Apollo);
   private http = inject(HttpClient);
+  private query = this.apollo.watchQuery<{ books: Book[] }>({
+    query: this.GET_BOOKS,
+    notifyOnNetworkStatusChange: true,
+  });
 
   public get() {
-    return this.apollo
-      .watchQuery<{ books: Book[] }>({
-        query: this.GET_BOOKS,
-      })
-      .valueChanges.pipe(map((data) => data.data.books));
+    return this.query.valueChanges;
   }
 
-  public getWithSignal(
-    signal: WritableSignal<ApiSignal<Book[]>> = SignalFactory.create<Book[]>()
-  ) {
+  public getWithSignalFactory(signal = SignalFactory.create<Book[]>()) {
     SignalFactory.pend(signal);
-
-    this.apollo
-      .watchQuery<{ books: Book[] }>({
-        query: this.GET_BOOKS,
-      })
-      .valueChanges.subscribe(({ data, error }) => {
-        console.log(data);
-        SignalFactory.complete(signal, data.books);
-        SignalFactory.error(signal, error);
+    this.get()
+      .pipe(map((response) => response.data.books))
+      .subscribe({
+        next: (data) => {
+          SignalFactory.complete(signal, data);
+        },
+        error: (err) => {
+          SignalFactory.error(signal, err);
+        },
       });
 
     return signal;
   }
 
-  public getVehicles(signal = SignalFactory.create<VehicleResponse>()) {
-    SignalFactory.pend(signal);
-
-    this.http.get<VehicleResponse>('https://swapi.dev/api/vehicles').subscribe({
-      next: (res) => {
-        SignalFactory.complete(signal, res);
-      },
-      error: (err) => {
-        SignalFactory.error(signal, err);
-      },
-    });
-
-    return signal;
+  public refetch() {
+    this.query.refetch();
   }
 }
