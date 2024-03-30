@@ -13,9 +13,8 @@ import { BookDetailsComponent } from '../book-details/book-details.component';
 })
 export class BookListComponent {
   private bookListService = inject(BookListService);
-  // books = this.bookListService.get();
-  selectedBook = signal<string>('');
   books = this.bookListService.getWithSignalFactory();
+  selectedBook = signal<string>('');
 
   select(id: string) {
     this.selectedBook.set(id);

@@ -19,7 +19,6 @@ export class BookListService {
     }
   `;
   private apollo = inject(Apollo);
-  private http = inject(HttpClient);
   private query = this.apollo.watchQuery<{ books: Book[] }>({
     query: this.GET_BOOKS,
     notifyOnNetworkStatusChange: true,

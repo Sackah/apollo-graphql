@@ -1,13 +1,17 @@
 <div id="book-details">
-    <div *ngIf="bookDetails$ | async as bookDetails">
-        <h2>{{bookDetails.book.name}}</h2>
-        <p>{{bookDetails.book.genre}}</p>
-        <p>{{bookDetails.book.author.name}}</p>
+    @if (book().loading) {
+        <div>Loading...</div>
+    } @else if (book().error) {
+        <div>{{book().error}}</div>
+    } @else {
+        <h2>{{book().data?.name}}</h2>
+        <p>{{book().data?.genre}}</p>
+        <p>{{book().data?.author?.name}}</p>
         <p>All books by this author:</p>
         <ul className="other-books">
-            @for (book of bookDetails.book.author.books; track $index) {
+            @for (book of book().data?.author?.books; track $index) {
                 <li>{{book.name}}</li>
             }
         </ul>
-    </div>
+    }
 </div>

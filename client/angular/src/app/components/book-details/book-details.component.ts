@@ -1,6 +1,10 @@
 import {
   Component,
+  Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
+  WritableSignal,
   computed,
   effect,
   inject,
@@ -9,7 +13,7 @@ import {
 import { BookDetailsService } from './book-details.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { Author, Book } from '../../shared';
+import { ApiSignal, Author, Book } from '../../shared';
 
 @Component({
   selector: 'apl-book-details',
@@ -18,16 +22,25 @@ import { Author, Book } from '../../shared';
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',
 })
-export class BookDetailsComponent implements OnInit {
-  bookId = input.required<string>();
+export class BookDetailsComponent implements OnInit, OnChanges {
+  @Input({ required: true }) bookId!: string;
   private bookDetailsService = inject(BookDetailsService);
-  public bookDetails$!: Observable<{
-    book: Book & {
-      author: Author;
-    };
-  }>;
+  book!: WritableSignal<
+    ApiSignal<
+      Book & {
+        author: Author;
+      },
+      {}
+    >
+  >;
 
-  ngOnInit(): void {
-    this.bookDetails$ = this.bookDetailsService.getBook(this.bookId());
+  ngOnInit() {
+    this.book = this.bookDetailsService.getBookWithSignalFactory(this.bookId);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['bookId']) {
+      this.bookDetailsService.getBookWithSignalFactory(this.bookId, this.book);
+    }
   }
 }
