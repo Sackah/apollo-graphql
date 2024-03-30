@@ -1,6 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { BookListService } from './book-list.service';
-import { Book, SignalFactory, VehicleResponse } from '../../shared';
 import { CommonModule } from '@angular/common';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 

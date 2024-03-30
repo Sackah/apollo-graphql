@@ -1,1 +1,29 @@
-<p>add-book works!</p>
+<form class="add-book"[formGroup]="form" (submit)="handleSubmit()">
+    @if (addBookSignal && addBookSignal().loading) {
+        <p>Adding a new book...</p>
+    }
+    <fieldset class="field">
+        <label for="name">Book name:</label>
+        <input autocomplete="off" id="name" formControlName="name" type="text">
+    </fieldset>
+    <fieldset class="field">
+        <label for="genre">Genre:</label>
+        <input autocomplete="off" id="genre" formControlName="genre" type="text">
+    </fieldset>
+    <fieldset class="field">
+        <label for="authorId">Author:</label>
+        <select id="authorId" formControlName="authorId">
+            <option value="" selected disabled>Select author</option>
+            @if (authors().loading) {
+                <option disabled>Loading authors...</option>
+            } @else if (authors().error) {
+                <option disabled>Error: {{authors().error}}</option>
+            } @else {
+                @for (author of authors().data?.authors; track $index) {
+                    <option value="{{author.id}}">{{author.name}}</option>
+                }
+            }
+        </select>
+    </fieldset>
+    <button type="submit">+</button>
+</form>
