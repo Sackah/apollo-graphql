@@ -1,4 +1,4 @@
-import { Component, WritableSignal, inject } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject } from '@angular/core';
 import { AddBookService } from './add-book.service';
 import {
   FormControl,
@@ -6,12 +6,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AddBookForm, ApiSignal } from '../../shared';
+import { AddBookForm, ApiSignal, FormValidator } from '../../shared';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'apl-add-book',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-book.component.html',
   styleUrl: './add-book.component.scss',
 })
@@ -36,6 +37,7 @@ export class AddBookComponent {
         >
       >
     | undefined = undefined;
+  validator = new FormValidator(this.form);
 
   handleSubmit() {
     if (this.form.valid) {
