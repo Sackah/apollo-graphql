@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { AddBookForm, ApiSignal, FormValidator } from '../../shared';
 import { CommonModule } from '@angular/common';
+import { BooleanPipe } from '../../pipes/boolean.pipe';
 
 @Component({
   selector: 'apl-add-book',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, BooleanPipe],
   templateUrl: './add-book.component.html',
   styleUrl: './add-book.component.scss',
 })

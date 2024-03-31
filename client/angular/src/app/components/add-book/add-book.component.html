@@ -5,16 +5,12 @@
     <fieldset class="field">
         <label for="name">Book name:</label>
         <input autocomplete="off" id="name" formControlName="name" type="text">
-        @if (validator.errors('name')) {
-            <p>{{validator.errors('name')}}</p>
-        }
+        <p>{{validator.errors('name') | boolean}}</p>
     </fieldset>
     <fieldset class="field">
         <label for="genre">Genre:</label>
         <input autocomplete="off" id="genre" formControlName="genre" type="text">
-        @if (validator.errors('genre')) {
-            <p>{{validator.errors('genre')}}</p>
-        }
+        <p>{{validator.errors('genre')}}</p>
     </fieldset>
     <fieldset class="field">
         <label for="authorId">Author:</label>
@@ -30,9 +26,7 @@
                 }
             }
         </select>
-        @if (validator.errors('authorId')) {
-            <p>{{validator.errors('authorId')}}</p>
-        }
+        <p>{{validator.errors('authorId')}}</p>
     </fieldset>
     <button type="submit">+</button>
 </form>
